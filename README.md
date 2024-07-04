@@ -23,6 +23,7 @@ DOAM supports:
 ### Prerequisites
 
 - Node.js (any reasonably current version should work fine)
+- Blank servers.json file in a persistent location (see src/config.js for more details on this!)
 - Axiom.co account (for optional structured logging output)
 
 ### Installation
