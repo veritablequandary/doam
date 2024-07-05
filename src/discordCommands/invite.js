@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { invite } = require('../config');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -8,6 +7,17 @@ module.exports = {
     .setDMPermission(false),
 
   run: async interaction => {
-    await interaction.reply({ content: `[Click this link to invite DOAM to your server](${invite})`, ephemeral: true });
+    if (process.env.DISCORD_INVITELINK) {
+      await interaction.reply({
+        content: `[Click this link to invite DOAM to your server](${process.env.DISCORD_INVITELINK})`,
+        ephemeral: true,
+      });
+      return;
+    }
+
+    await interaction.reply({
+      content: 'No invite link set - please contact Sterling to get the bot onto your server.',
+      ephemeral: true,
+    });
   },
 };
