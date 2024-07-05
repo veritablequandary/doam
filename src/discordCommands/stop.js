@@ -17,15 +17,17 @@ module.exports = {
     }
 
     const activeDoam = doams.get(interaction.guild.id);
-    if (activeDoam) {
-      const channel = await interaction.guild.channels.fetch(activeDoam.channel);
-      await channel.send(`DOAM stopped by ${userMention(interaction.user.id)}`);
-      doams.delete(interaction.guild.id);
-      await interaction.editReply('DOAM stopped successfully.');
-      return;
-    } else {
+    if (!activeDoam) {
       await interaction.editReply('There is not an in-progress DOAM to stop on this server!');
       return;
     }
+
+    doams.delete(interaction.guild.id);
+
+    await interaction.deleteReply();
+    const channel = await interaction.guild.channels.fetch(activeDoam.channel);
+    await channel.send(`DOAM stopped by ${userMention(interaction.user.id)}`);
+
+    return;
   },
 };
