@@ -22,12 +22,12 @@ async function deployCommands() {
 exports.ready = async () => {
   await deployCommands();
 
-  log.info('Startup sequence complete...');
-
   if (existsSync(serversFile)) {
     const file = JSON.parse(readFileSync(serversFile));
     for (const key of Object.keys(file)) {
       serverSettings.set(key, file[key]);
     }
   }
+
+  log.info('Startup complete');
 };
