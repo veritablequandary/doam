@@ -5,11 +5,10 @@ const { commands, serverSettings, serversFile } = require('../config');
 const { log } = require('../log');
 
 async function deployCommands() {
-  const toDeploy = [];
-
   const commandsDir = join(__dirname, '../discordCommands');
   const commandsDirFiles = readdirSync(commandsDir);
 
+  const toDeploy = [];
   for (const file of commandsDirFiles) {
     const module = require(join(commandsDir, file));
     commands.set(module.data.name, module);
@@ -18,12 +17,9 @@ async function deployCommands() {
 
   const rest = new REST().setToken(process.env.DISCORD_TOKEN);
   await rest.put(Routes.applicationCommands(process.env.DISCORD_APPID), { body: toDeploy });
-  log.info(`Published ${commandsDirFiles.length} application commands to Discord gateway`);
 }
 
 exports.ready = async () => {
-  log.info('Ready event received from Discord gateway');
-
   await deployCommands();
 
   log.info('Startup sequence complete...');
@@ -34,6 +30,4 @@ exports.ready = async () => {
       serverSettings.set(key, file[key]);
     }
   }
-
-  log.info('Server settings cached');
 };
